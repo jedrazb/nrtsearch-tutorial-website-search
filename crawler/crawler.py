@@ -21,7 +21,7 @@ def run_crawler(urls):
         headings = [
             h.text.strip() for h in soup.find_all(["h1", "h2", "h3", "h4", "h5"])
         ]
-        content = soup.get_text().strip()
+        content = soup.get_text(" ", strip=True)
 
         website_data.append(
             {
