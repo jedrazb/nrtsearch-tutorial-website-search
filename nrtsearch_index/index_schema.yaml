@@ -1,0 +1,51 @@
+indexName: blogsearch
+field:
+  - name: url
+    type: TEXT
+    search: true
+    storeDocValues: true
+    tokenize: true
+    childFields:
+      - name: id
+        type: _ID
+        search: true
+  - name: title
+    type: TEXT
+    search: true
+    storeDocValues: true
+    tokenize: true
+  - name: description
+    type: TEXT
+    search: true
+    storeDocValues: true
+    tokenize: true
+  - name: headings
+    type: TEXT
+    search: true
+    storeDocValues: true
+    tokenize: true
+    multiValued: true
+  - name: content
+    type: TEXT
+    search: true
+    storeDocValues: true
+    tokenize: true
+    store: true
+    termVectors: TERMS_POSITIONS_OFFSETS
+    childFields:
+      - name: analyzed
+        type: TEXT
+        search: true
+        store: true
+        termVectors: TERMS_POSITIONS_OFFSETS
+        tokenize: true
+        analyzer:
+          custom:
+            charFilters:
+              - name: htmlstrip
+            tokenizer:
+              name: standard
+            tokenFilters:
+              - name: lowercase
+              - name: kStem
+              - name: stop
