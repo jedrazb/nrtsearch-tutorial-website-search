@@ -1,2 +1,5 @@
 beautifulsoup4==4.12.2
+grpcio==1.53.0
+grpcio-tools==1.53.0
+protobuf==4.22.1
 requests==2.28.2
