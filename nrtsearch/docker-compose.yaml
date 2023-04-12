@@ -7,13 +7,13 @@ services:
     command: >
       bash -c "/user/nrtsearch/build/install/nrtsearch/bin/lucene-server /user/nrtsearch/nrtsearch-primary-config.yaml"
     hostname: primary-node
-    expose:
-      - "8000"
+    ports:
+      - "9000:8000"
 
   replica-node:
     build: ./
     command: ./entrypoint_replica.sh
     deploy:
       replicas: 2
-    expose:
-      - "8000"
+    ports:
+      - "9001-9002:8000"
