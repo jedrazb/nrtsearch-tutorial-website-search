@@ -27,17 +27,15 @@ nrtsearch_protos:
 
 # Compile client .proto files to python code
 nrtsearch_protoc: nrtsearch_protos
-	mkdir -p protoc
 	$(PYTHON) -m grpc_tools.protoc \
 		--proto_path protos \
-		--grpc_python_out protoc \
-		--python_out protoc \
+		--grpc_python_out nrtsearch_client \
+		--python_out nrtsearch_client \
 		protos/yelp/nrtsearch/luceneserver.proto \
 		protos/yelp/nrtsearch/search.proto \
 		protos/yelp/nrtsearch/analysis.proto \
 		protos/yelp/nrtsearch/suggest.proto
-	cp `find protoc -name "*.py"` nrtsearch_client/nrtsearch_py_grpc
-	rm -rf protos protoc
+	rm -rf protos
 
 
 
