@@ -1,4 +1,4 @@
-indexName: blogsearch
+indexName: "blog_search"
 field:
   - name: url
     type: TEXT
@@ -9,6 +9,7 @@ field:
       - name: id
         type: _ID
         search: true
+        storeDocValues: true
   - name: title
     type: TEXT
     search: true

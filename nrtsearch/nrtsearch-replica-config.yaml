@@ -1,7 +1,7 @@
 nodeName: "nrtsearch-server-replica"
 hostName: "host-name-replica"
 port: "8000"
-replicationPort: "8003"
+replicationPort: "8001"
 stateDir: "/user/app/replica_state"
 indexDir: "/user/app/replica_index_base"
 threadPoolConfiguration:

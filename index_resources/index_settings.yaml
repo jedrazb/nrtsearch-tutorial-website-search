@@ -1,0 +1,5 @@
+indexName: "blog_search"
+nrtCachingDirectoryMaxSizeMB: 6.0
+concurrentMergeSchedulerMaxThreadCount: 8
+indexMergeSchedulerAutoThrottle: false
+concurrentMergeSchedulerMaxMergeCount: 16

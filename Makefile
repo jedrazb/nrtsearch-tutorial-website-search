@@ -38,5 +38,8 @@ nrtsearch_protoc: nrtsearch_protos
 	rm -rf protos
 
 
+# Setup index on primary and replicas
+make setup_index:
+	$(PYTHON) nrtsearch_client/start_index.py   
 
 
