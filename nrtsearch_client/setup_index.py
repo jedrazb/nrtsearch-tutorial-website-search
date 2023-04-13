@@ -4,13 +4,13 @@ from google.protobuf.json_format import Parse
 
 from service_discovery import SERVICE_DISCOVERY
 from client import get_nrtsearch_client
+from client import INDEX_NAME
 from yelp.nrtsearch.luceneserver_pb2 import CreateIndexRequest
 from yelp.nrtsearch.luceneserver_pb2 import CommitRequest
 from yelp.nrtsearch.luceneserver_pb2 import StartIndexRequest
 from yelp.nrtsearch.luceneserver_pb2 import SettingsRequest
 from yelp.nrtsearch.luceneserver_pb2 import FieldDefRequest
 
-INDEX_NAME = "blog_search"
 INDEX_SCHEMA_PATH = "index_resources/index_schema.yaml"
 INDEX_SETTINGS_PATH = "index_resources/index_settings.yaml"
 

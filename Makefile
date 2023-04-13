@@ -40,6 +40,6 @@ nrtsearch_protoc: nrtsearch_protos
 
 # Setup index on primary and replicas
 make setup_index:
-	$(PYTHON) nrtsearch_client/start_index.py   
+	$(PYTHON) nrtsearch_client/setup_index.py
 
 
