@@ -12,11 +12,11 @@ clean:
 	rm -rf $(VENV)
 
 # Crawler
-run_crawler: venv
+run_crawler:
 	$(PYTHON) crawler/crawler.py
 
 # Nrtsearch cluster
-start_nrtsearch_cluster:
+start_nrtsearch_cluster:venv
 	docker compose --project-directory ./nrtsearch up
 
 # Generate nrtsearch .proto files and their dependencies
@@ -39,7 +39,11 @@ nrtsearch_protoc: nrtsearch_protos
 
 
 # Setup index on primary and replicas
-make setup_index:
+setup_index:
 	$(PYTHON) nrtsearch_client/setup_index.py
+
+# Index the data into nrtsearch
+run_indexer: run_crawler
+	$(PYTHON) nrtsearch_client/indexer.py
 
 

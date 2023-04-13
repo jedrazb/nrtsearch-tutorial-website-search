@@ -11,13 +11,15 @@ from yelp.nrtsearch.luceneserver_pb2 import AddDocumentRequest
 BATCH_SIZE = 10
 
 
+# Load the data processed and saved by the crawler
 def _load_website_data():
     with open("index_resources/website_data.json") as f:
         data = json.load(f)
 
-    return chunked(data, BATCH_SIZE)
+    return data
 
 
+# Prepare the request payload
 def _prepare_document_stream(docs):
     for doc in docs:
         fields = {
@@ -33,8 +35,8 @@ def _prepare_document_stream(docs):
         yield AddDocumentRequest(indexName=INDEX_NAME, fields=fields)
 
 
+# Use gRPC streaming to send documents for ingestion
 def index_document_stream(primary_client, doc_stream):
-    # We are streaming docs in bulk for ingestion
     response = primary_client.addDocuments(doc_stream)
     return response
 
@@ -44,15 +46,19 @@ def run_indexer():
     host, port = SERVICE_DISCOVERY.get("primary-node")
     primary_client = get_nrtsearch_client(host, port)
 
-    website_docs_chunks = _load_website_data()
+    website_docs = _load_website_data()
 
-    for idx, docs_chunk in enumerate(website_docs_chunks):
+    # Split data into chunks for bulk ingestion
+    chunked_website_docs = chunked(website_docs, BATCH_SIZE)
+
+    # Process each chunk of docs in bulk
+    for idx, docs_chunk in enumerate(chunked_website_docs):
         doc_stream = _prepare_document_stream(docs=docs_chunk)
         index_response = index_document_stream(primary_client, doc_stream)
         print(
             f"Indexing docs chunk: {idx}, number of docs: {len(docs_chunk)}, response:\n{index_response}"
         )
-
+    # Call commit after docs are ingested
     commit_response = commit_index(primary_client)
     print(f"Commit response:\n{commit_response}")
 
