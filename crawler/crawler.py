@@ -37,7 +37,7 @@ def run_crawler(urls):
 
 
 def save_data(website_data):
-    with open("website_data.json", "w") as outfile:
+    with open("index_resources/website_data.json", "w") as outfile:
         json.dump(website_data, outfile)
 
 
