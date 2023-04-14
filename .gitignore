@@ -134,3 +134,7 @@ dmypy.json
 # protos, protoc
 protos/
 protoc/
+
+# logs
+
+logs/

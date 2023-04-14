@@ -12,11 +12,11 @@ clean:
 	rm -rf $(VENV)
 
 # Crawler
-run_crawler:
+run_crawler: venv
 	$(PYTHON) crawler/crawler.py
 
 # Nrtsearch cluster
-start_nrtsearch_cluster:venv
+start_nrtsearch_cluster:
 	docker compose --project-directory ./nrtsearch up
 
 # Generate nrtsearch .proto files and their dependencies
@@ -39,11 +39,18 @@ nrtsearch_protoc: nrtsearch_protos
 
 
 # Setup index on primary and replicas
-setup_index:
+setup_index: venv
 	$(PYTHON) nrtsearch_client/setup_index.py
 
 # Index the data into nrtsearch
-run_indexer: run_crawler
+run_indexer:
 	$(PYTHON) nrtsearch_client/indexer.py
+
+# start web UI to interact with gRPC server
+grpcox:
+	mkdir -p logs
+	docker pull gusaul/grpcox:latest
+	docker run -p 6969:6969 -v $(shell pwd)/logs:/log -d gusaul/grpcox
+
 
 
