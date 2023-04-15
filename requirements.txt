@@ -1,4 +1,6 @@
 beautifulsoup4==4.12.2
+Flask==2.2.3
+Flask-Cors==3.0.10
 googleapis-common-protos==1.59.0
 grpcio==1.53.0
 grpcio-tools==1.53.0

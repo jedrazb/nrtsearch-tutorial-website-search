@@ -27,7 +27,7 @@ class Searcher:
         else:
             key = "content.analyzed"
 
-        return hit.highlights[key].fragments
+        return [str(fragment) for fragment in hit.highlights[key].fragments]
 
     def search(
         self,
@@ -101,10 +101,11 @@ class Searcher:
             BooleanClause(
                 query=Query(
                     booleanQuery=BooleanQuery(
-                        minimumNumberShouldMatch=1,
+                        minimumNumberShouldMatch=2,
                         clauses=[
                             BooleanClause(query=match_content_query),
-                            BooleanClause(query=exact_phrase_content_query),
+                            BooleanClause(query=match_headings_query),
+                            BooleanClause(query=match_phrase_content_query),
                             BooleanClause(query=match_title_query),
                             BooleanClause(query=match_url_query),
                         ],
@@ -112,10 +113,10 @@ class Searcher:
                 ),
                 occur=BooleanClause.Occur.MUST,
             ),
-            BooleanClause(query=match_phrase_content_query),
+            BooleanClause(query=match_content_query),
+            BooleanClause(query=exact_phrase_content_query),
             BooleanClause(query=match_phrase_title_query),
             BooleanClause(query=match_description_query),
-            BooleanClause(query=match_headings_query),
         ]
 
         search_request = SearchRequest(
@@ -155,14 +156,4 @@ class Searcher:
             hit_result["highlights"] = self.get_highlights(hit)
             result.append(hit_result)
 
-            # print(
-            #     ", ".join(
-            #         (
-            #             f'title: {hit_result["title"]}',
-            #             f'url: {hit_result["url"]}',
-            #             f"score: {hit.score}",
-            #             # f'highlights: {hit_result["highlights"]}',
-            #         )
-            #     )
-            # )
         return result, response.totalHits.value

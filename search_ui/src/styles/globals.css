@@ -1,0 +1,29 @@
+
+.ds-title {
+  color: #3a56e4;
+  text-decoration: none;
+}
+
+.result-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 2.3rem;
+}
+
+.sui-layout-sidebar {
+  width: 0%;
+}
+
+.ds-result {
+  padding-top: 0px;
+}
+
+.ds-title {
+  margin-bottom: 0%;
+}
+
+.ds-url {
+  color: gray;
+  font-size: small;
+}
