@@ -22,11 +22,11 @@ def search():
         query_text=search_term, start_hit=start_hit, top_hits=results_per_page
     )
 
-    # TODO: Do we need this sill raw stuff?
     for i in range(len(results)):
         results[i]["id"] = {"raw": results[i]["url"]}
         results[i]["title"] = {"raw": results[i]["title"]}
         results[i]["url"] = {"raw": results[i]["url"]}
+
     response = dict()
     response["results"] = results
     response["resultSearchTerm"] = search_term
@@ -44,16 +44,6 @@ def search():
         if start_hit + results_per_page < total_results
         else total_results
     )
-
-    # # Stuff I am not sure matters
-    response["autocompletedResults"] = []
-    response["autocompletedResultsRequestId"] = 0
-    response["autocompletedSuggestions"] = []
-    response["autocompletedSuggestionsRequestId"] = 0
-    response["rawResponse"] = {"raw": results}
-    response["requestId"] = 0
-
-    print(response)
 
     return jsonify(response)
 

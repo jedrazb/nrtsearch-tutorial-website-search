@@ -68,7 +68,12 @@ export default function Home() {
               <ErrorBoundary>
                 <Layout
                   header={<SearchBox debounceLength={0} />}
-                  sideContent={<div></div>}
+                  sideContent={
+                    <div>
+                      <h2>Nrtsearch Tutorial 🚀 </h2>
+                      <h4>Indexing Web Content for Search</h4>
+                    </div>
+                  }
                   bodyContent={<Results resultView={ResultView} />}
                   bodyHeader={
                     <React.Fragment>
