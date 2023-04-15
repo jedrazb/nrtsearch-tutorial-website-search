@@ -1,4 +1,10 @@
-import type { APIConnector } from "@elastic/search-ui";
+import type {
+  APIConnector,
+  RequestState,
+  QueryConfig,
+  ResponseState,
+  AutocompleteQueryConfig,
+} from "@elastic/search-ui";
 
 class MyAPIConnector implements APIConnector {
   async onSearch(
@@ -25,7 +31,10 @@ class MyAPIConnector implements APIConnector {
     return response.json();
   }
 
-  onAutocomplete: () => {
+  onAutocomplete: (
+    state: RequestState,
+    queryConfig: AutocompleteQueryConfig
+  ) => {
     // Not implemented
   };
 

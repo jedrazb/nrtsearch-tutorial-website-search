@@ -50,7 +50,7 @@ run_indexer:
 grpcox:
 	mkdir -p logs
 	docker pull gusaul/grpcox:latest
-	docker run -p 6969:6969 -v $(shell pwd)/logs:/log -d gusaul/grpcox
+	docker run -p 6969:6969 -v $(shell pwd)/logs:/log --name grpcox -d gusaul/grpcox
 
 
 
