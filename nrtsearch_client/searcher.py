@@ -1,9 +1,3 @@
-from html.parser import HTMLParser
-from io import StringIO
-import json
-
-from google.protobuf.json_format import MessageToJson
-
 from service_discovery import SERVICE_DISCOVERY
 from client import get_nrtsearch_client
 from client import INDEX_NAME
@@ -11,36 +5,12 @@ from client import INDEX_NAME
 
 from yelp.nrtsearch.search_pb2 import BooleanClause
 from yelp.nrtsearch.search_pb2 import BooleanQuery
-from yelp.nrtsearch.search_pb2 import FunctionScoreQuery
 from yelp.nrtsearch.search_pb2 import Highlight
 from yelp.nrtsearch.search_pb2 import MatchPhraseQuery
 from yelp.nrtsearch.search_pb2 import MatchQuery
 from yelp.nrtsearch.search_pb2 import PhraseQuery
 from yelp.nrtsearch.search_pb2 import Query
-from yelp.nrtsearch.search_pb2 import Script
 from yelp.nrtsearch.search_pb2 import SearchRequest
-from yelp.nrtsearch.search_pb2 import TermQuery
-
-
-class HtmlStripper(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.reset()
-        self.strict = False
-        self.convert_charrefs = True
-        self.text = StringIO()
-
-    def handle_data(self, d):
-        self.text.write(d)
-
-    def get_data(self):
-        return self.text.getvalue()
-
-    @staticmethod
-    def strip_tags(html):
-        s = HtmlStripper()
-        s.feed(html)
-        return s.get_data()
 
 
 class Searcher:
@@ -57,23 +27,7 @@ class Searcher:
         else:
             key = "content.analyzed"
 
-        highlights = []
-
-        for fragment in hit.highlights[key].fragments:
-            html_stripped = HtmlStripper.strip_tags(fragment)
-            idx_start = html_stripped.find("[START]")
-            idx_tag = html_stripped.find(">") + 1
-            if idx_tag < idx_start:
-                html_stripped = html_stripped[idx_tag:]
-            idx_end = html_stripped.rfind("[END]")
-            idx_tag = html_stripped.find("<")
-            if idx_end < idx_tag:
-                html_stripped = html_stripped[:idx_tag]
-            bolded_pre = html_stripped.replace("[START]", "<em>")
-            bolded = bolded_pre.replace("[END]", "</em>")
-            highlights.append(bolded)
-
-        return highlights
+        return hit.highlights[key].fragments
 
     def search(
         self,
@@ -177,7 +131,7 @@ class Searcher:
             highlight=Highlight(
                 fields=["content", "content.analyzed"],
                 settings=Highlight.Settings(
-                    pre_tags=["[START]"], post_tags=["[END]"]),
+                    pre_tags=["<em>"], post_tags=["</em>"]),
             ),
         )
 
