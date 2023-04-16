@@ -13,15 +13,19 @@ from yelp.nrtsearch.search_pb2 import Query
 from yelp.nrtsearch.search_pb2 import SearchRequest
 
 
+def get_load_balancing_replica_client():
+    # For gRPC client-side round robin load balancing, the hostname
+    # needs to point to multiple replicas (configured at DNS level).
+    # Within docker network all replicas are available at "replica-node" hostname.
+    # Read more: https://groups.google.com/g/grpc-io/c/ZtBCw4ZqLqE
+    channel = grpc.insecure_channel(
+        "replica-node:8000", [("grpc.lb_policy_name", "round_robin")])
+    return LuceneServerStub(channel)
+
+
 class Searcher:
     def __init__(self):
-        # For client-side round robin load balancing by gRPC client
-        # we need to setup DNS to point single hostname to multiple replicas.
-        # In docker-compose all replicas are available from at replica-node hostname
-        # https://groups.google.com/g/grpc-io/c/ZtBCw4ZqLqE
-        channel = grpc.insecure_channel(
-            "replica-node:8000", [("grpc.lb_policy_name", "round_robin")])
-        self._client = LuceneServerStub(channel)
+        self._client = get_load_balancing_replica_client()
 
     def get_highlights(self, hit):
         len_content = len(hit.highlights["content"].fragments)

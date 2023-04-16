@@ -50,4 +50,8 @@ start_index: venv
 run_indexer: venv
 	$(PYTHON) nrtsearch_client/indexer.py
 
+# Check index status
+index_status: venv
+	$(PYTHON) nrtsearch_client/get_indices.py
+
 
