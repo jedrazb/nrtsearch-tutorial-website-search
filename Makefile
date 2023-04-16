@@ -10,7 +10,7 @@ venv: $(PYTHON) requirements.txt
 clean:
 	find . -type d -name "__pycache__" | xargs rm -rf {};
 	rm -rf $(VENV)
-	docker ps -aq | xargs docker stop | xargs docker rm
+	docker compose rm -sfv
 
 # Nrtsearch Tutorial - Blog Search
 start: nrtsearch_protoc
@@ -30,7 +30,7 @@ nrtsearch_protos:
 	docker run -v $(shell pwd)/protos:/user/protos  nrtsearch-protos-builder:latest
 
 # Compile client .proto files to python code
-nrtsearch_protoc: nrtsearch_protos
+nrtsearch_protoc: venv nrtsearch_protos
 	$(PYTHON) -m grpc_tools.protoc \
 		--proto_path protos \
 		--grpc_python_out nrtsearch_client \

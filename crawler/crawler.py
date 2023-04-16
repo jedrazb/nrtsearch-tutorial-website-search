@@ -44,6 +44,7 @@ def save_data(website_data):
 def main():
     urls = get_source_urls()  # url's from website sitemap
     website_data = run_crawler(urls)
+    print(f'Crawled {len(website_data)} urls.')
     save_data(website_data)
 
 
