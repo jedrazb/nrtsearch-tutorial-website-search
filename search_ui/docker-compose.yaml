@@ -1,11 +1,10 @@
 
 version: '3.8'
 services:
-  web:
+  search-ui:
     build:
       context: ./
       target: runner
     command: yarn start
     ports:
-      - "3000:3000"
-      - "5000:5000"
+      - "3000:3000" # frontend

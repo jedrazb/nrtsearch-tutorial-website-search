@@ -10,14 +10,18 @@ venv: $(PYTHON) requirements.txt
 clean:
 	find . -type d -name "__pycache__" | xargs rm -rf {};
 	rm -rf $(VENV)
+	docker ps -aq | xargs docker stop | xargs docker rm
+
+# Nrtsearch Tutorial - Blog Search
+start: nrtsearch_protoc
+	mkdir -p logs
+	cp requirements.txt ./nrtsearch_client/requirements.txt
+	docker compose build
+	docker compose up
 
 # Crawler
 run_crawler: venv
 	$(PYTHON) crawler/crawler.py
-
-# Nrtsearch cluster
-start_nrtsearch_cluster:
-	docker compose --project-directory ./nrtsearch up
 
 # Generate nrtsearch .proto files and their dependencies
 nrtsearch_protos:
@@ -39,18 +43,11 @@ nrtsearch_protoc: nrtsearch_protos
 
 
 # Setup index on primary and replicas
-setup_index: venv
+start_index: venv
 	$(PYTHON) nrtsearch_client/setup_index.py
 
 # Index the data into nrtsearch
-run_indexer:
+run_indexer: venv
 	$(PYTHON) nrtsearch_client/indexer.py
-
-# start web UI to interact with gRPC server
-grpcox:
-	mkdir -p logs
-	docker pull gusaul/grpcox:latest
-	docker run -p 6969:6969 -v $(shell pwd)/logs:/log --name grpcox -d gusaul/grpcox
-
 
 

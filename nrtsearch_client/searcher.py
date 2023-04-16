@@ -1,8 +1,8 @@
-from service_discovery import SERVICE_DISCOVERY
-from client import get_nrtsearch_client
+import grpc
+
 from client import INDEX_NAME
 
-
+from yelp.nrtsearch.luceneserver_pb2_grpc import LuceneServerStub
 from yelp.nrtsearch.search_pb2 import BooleanClause
 from yelp.nrtsearch.search_pb2 import BooleanQuery
 from yelp.nrtsearch.search_pb2 import Highlight
@@ -15,8 +15,12 @@ from yelp.nrtsearch.search_pb2 import SearchRequest
 
 class Searcher:
     def __init__(self):
-        host, port = SERVICE_DISCOVERY.get("replica-node-0")
-        self._client = get_nrtsearch_client(host, port)
+        # For client-side round robin load balancing by gRPC client
+        # we need to setup DNS to point single hostname to multiple replicas
+        # https://groups.google.com/g/grpc-io/c/ZtBCw4ZqLqE see how to do it
+        # This doesn't make use of gRPC load balancing - we choose random replica
+        channel = grpc.insecure_channel("replica-node:8000")
+        self._client = LuceneServerStub(channel)
 
     def get_highlights(self, hit):
         len_content = len(hit.highlights["content"].fragments)

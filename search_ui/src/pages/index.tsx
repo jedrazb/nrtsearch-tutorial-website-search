@@ -72,6 +72,7 @@ export default function Home() {
                     <div>
                       <h2>Nrtsearch Tutorial 🚀 </h2>
                       <h4>Indexing Web Content for Search</h4>
+                      <h4>Blog search</h4>
                     </div>
                   }
                   bodyContent={<Results resultView={ResultView} />}

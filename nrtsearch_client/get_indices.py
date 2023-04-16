@@ -1,5 +1,6 @@
 from service_discovery import SERVICE_DISCOVERY
 from client import get_nrtsearch_client
+from client import INDEX_NAME
 from yelp.nrtsearch.luceneserver_pb2 import IndicesRequest
 
 

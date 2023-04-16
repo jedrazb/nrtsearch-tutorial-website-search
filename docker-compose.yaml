@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  primary-node:
+    build: ./nrtsearch/
+    command: >
+      bash -c "/user/nrtsearch/build/install/nrtsearch/bin/lucene-server /user/nrtsearch/nrtsearch-primary-config.yaml"
+    hostname: primary-node
+    ports:
+      - "8000:8000"
+
+  replica-node:
+    build: ./nrtsearch/
+    command: ./entrypoint_replica.sh
+    deploy:
+      replicas: 2
+    hostname: replica-node
+    ports:
+      - "8001-8002:8000"
+  
+  blog-search-server:
+    build: ./nrtsearch_client/
+    command: python api.py
+    hostname: blog-search-server
+    ports:
+      - "5555:5555"
+
+  search-ui:
+    build: ./search_ui/
+    command: yarn start
+    ports:
+      - "3000:3000"
+    
+  grpcox:
+    image: gusaul/grpcox:latest
+    ports:
+      - "6969:6969"
+    volumes:
+      - ./logs/:/log
+  

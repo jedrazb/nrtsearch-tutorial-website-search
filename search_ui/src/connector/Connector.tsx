@@ -13,7 +13,8 @@ class MyAPIConnector implements APIConnector {
   ): Promise<ResponseState> {
     const { searchTerm, current, filters, sort, resultsPerPage } = state;
     // perform a request to your API with the request state
-    const response = await fetch("http://localhost:5000/search", {
+    // localhost 5555 should be exposed by Docker to point to search server
+    const response = await fetch("http://localhost:5555/search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

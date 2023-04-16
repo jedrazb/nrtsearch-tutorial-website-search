@@ -138,3 +138,6 @@ protoc/
 # logs
 
 logs/
+
+# Copy of top-level requirements for Docker img
+nrtsearch_client/requirements.txt

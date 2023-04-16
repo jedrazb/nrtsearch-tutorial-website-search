@@ -14,6 +14,4 @@ RUN pip install -r requirements.txt
 COPY . /app
 
 # configure the container to run
-ENTRYPOINT ["python" ]
-
-CMD ["api.py" ]
+CMD ["python", "api.py"]
