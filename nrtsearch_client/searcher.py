@@ -19,7 +19,7 @@ def get_load_balancing_replica_client():
     # Within docker network all replicas are available at "replica-node" hostname.
     # Read more: https://groups.google.com/g/grpc-io/c/ZtBCw4ZqLqE
     channel = grpc.insecure_channel(
-        "replica-node:8000", [("grpc.lb_policy_name", "round_robin")])
+        "replica-node:8000", options=[("grpc.lb_policy_name", "round_robin")])
     return LuceneServerStub(channel)
 
 
